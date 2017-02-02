@@ -90,11 +90,15 @@ class CsvIterator implements \Iterator
                 if (substr($value, 0, 1) == $this->option['enclosure']) {
                     // check the last letter is 'enclosure'
                     if (substr($value, -1) == $this->option['enclosure']) {
-                        $this->processEnclosedField($value, $this->option);
+                        // case where the first and last letter is the same enclosure
+                        if(strlen($value) === 1) {
+                            $this->processClosingField($value, $this->option);
+                        } else {
+                            $this->processEnclosedField($value, $this->option);
+                        }
                     } else {
                         $this->processContinuousField($value, $this->option);
                     }
-
                 } else { // first letter is NOT 'enclosure'
                     // check the last letter is 'enclosure'
                     if(substr($value, -1) == $this->option['enclosure']) {
