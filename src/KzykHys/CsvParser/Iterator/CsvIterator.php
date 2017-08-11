@@ -55,7 +55,7 @@ class CsvIterator implements \Iterator
         $this->option = array_merge(array(
             'delimiter' => ',',
             'enclosure' => '"',
-            'encoding'  => 'CP932',
+            'encoding'  => 'UTF-8',
             'header'    => false
         ), $option);
     }
