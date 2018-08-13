@@ -88,8 +88,8 @@ class CsvIterator implements \Iterator
 
                 // check the first letter is 'enclosure' or not
                 if (substr($value, 0, 1) == $this->option['enclosure']) {
-                    // check the last letter is 'enclosure'
-                    if (substr($value, -1) == $this->option['enclosure']) {
+                    // check the last letter is 'enclosure', but not the second last letter which would be escaping the enclosure
+                    if (substr($value, -1) == $this->option['enclosure'] && substr($value, -2, 1) != $this->option['enclosure']) {
                         // case where the first and last letter is the same enclosure
                         if(strlen($value) === 1) {
                             $this->processClosingField($value, $this->option);
@@ -100,8 +100,8 @@ class CsvIterator implements \Iterator
                         $this->processContinuousField($value, $this->option);
                     }
                 } else { // first letter is NOT 'enclosure'
-                    // check the last letter is 'enclosure'
-                    if(substr($value, -1) == $this->option['enclosure']) {
+                    // check the last letter is 'enclosure', but not the second last letter which would be escaping the enclosure
+                    if(substr($value, -1) == $this->option['enclosure'] && substr($value, -2, 1) != $this->option['enclosure']) {
                         $this->processClosingField($value, $this->option);
                     } else {
                         $this->processField($value, $this->option);
