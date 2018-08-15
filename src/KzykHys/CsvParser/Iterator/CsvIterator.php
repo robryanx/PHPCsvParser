@@ -81,15 +81,22 @@ class CsvIterator implements \Iterator
 
             // split the line by 'delimiter'
             $tokens = explode($this->option['delimiter'], $line);
+            if(!$tokens) {
+                $tokens = [];
+            }
 
             // loop over the columns
             foreach ($tokens as $value) {
                 $value = preg_replace('/"(\r\n|\r|\n)*$/', '"', $value);
 
+                if(empty($value)) {
+                    continue;
+                }
+
                 // check the first letter is 'enclosure' or not
-                if (substr($value, 0, 1) == $this->option['enclosure']) {
+                if (substr($value, 0, 1) === $this->option['enclosure']) {
                     // check the last letter is 'enclosure', but not the second last letter which would be escaping the enclosure
-                    if (substr($value, -1) == $this->option['enclosure'] && substr($value, -2, 1) != $this->option['enclosure']) {
+                    if (substr($value, -1) === $this->option['enclosure'] && (strlen($value) === 1 || substr($value, -2, 1) !== $this->option['enclosure'])) {
                         // case where the first and last letter is the same enclosure
                         if(strlen($value) === 1) {
                             $this->processClosingField($value, $this->option);
@@ -101,7 +108,7 @@ class CsvIterator implements \Iterator
                     }
                 } else { // first letter is NOT 'enclosure'
                     // check the last letter is 'enclosure', but not the second last letter which would be escaping the enclosure
-                    if(substr($value, -1) == $this->option['enclosure'] && substr($value, -2, 1) != $this->option['enclosure']) {
+                    if(substr($value, -1) === $this->option['enclosure'] && (strlen($value) === 1 || substr($value, -2, 1) !== $this->option['enclosure'])) {
                         $this->processClosingField($value, $this->option);
                     } else {
                         $this->processField($value, $this->option);
