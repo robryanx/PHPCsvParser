@@ -89,8 +89,8 @@ class CsvIterator implements \Iterator
             foreach ($tokens as $value) {
                 $value = preg_replace('/"(\r\n|\r|\n)*$/', '"', $value);
 
-                if(empty($value)) {
-                    continue;
+                if($value !== $this->option['enclosure'].$this->option['enclosure']) {
+                    $value = str_replace($this->option['enclosure'].$this->option['enclosure'], '{ENC_ESCAPE}', $value);
                 }
 
                 // check the first letter is 'enclosure' or not
@@ -235,14 +235,14 @@ class CsvIterator implements \Iterator
     /**
      * Convert double enclosure to single enclosure
      *
-     * @param $value
-     * @param $enclosure
+     * @param string $value
+     * @param string $enclosure
      *
      * @return mixed
      */
     private function unescapeEnclosure($value, $enclosure)
     {
-        return str_replace(str_repeat($enclosure, 2), $enclosure, $value);
+        return str_replace("{ENC_ESCAPE}", $enclosure, $value);
     }
 
     /**
@@ -293,7 +293,7 @@ class CsvIterator implements \Iterator
     }
 
     /**
-     * @param $column
+     * @param int $column
      */
     private function getIndexForColumn($column)
     {
