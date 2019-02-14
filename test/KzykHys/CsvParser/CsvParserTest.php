@@ -1,8 +1,9 @@
 <?php
 
 use KzykHys\CsvParser\CsvParser;
+use PHPUnit\Framework\TestCase;
 
-class CsvParserTest extends \PHPUnit_Framework_TestCase
+class CsvParserTest extends TestCase
 {
 
     public function providePatterns()
@@ -76,6 +77,8 @@ class CsvParserTest extends \PHPUnit_Framework_TestCase
         $parser = new CsvParser(new ArrayIterator());
 
         foreach ($parser as $row);
+
+        $this->assertTrue(true);
     }
 
     public function testOffsetAndLimitOption()
@@ -101,8 +104,8 @@ class CsvParserTest extends \PHPUnit_Framework_TestCase
         $expected = json_decode(file_get_contents($dir . '6-cp932-excel.json'));
 
         foreach ($files as $file) {
-            $fromFile   = CsvParser::fromFile($file)->parse();
-            $fromString = CsvParser::fromString(file_get_contents($file))->parse();
+            $fromFile   = CsvParser::fromFile($file, ['encoding'=>'CP932'])->parse();
+            $fromString = CsvParser::fromString(file_get_contents($file), ['encoding'=>'CP932'])->parse();
             $this->assertEquals($fromFile, $fromString);
             $this->assertEquals($expected, $fromFile);
         }

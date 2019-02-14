@@ -1,8 +1,9 @@
 <?php
 
 use KzykHys\CsvParser\Iterator\FileIterator;
+use PHPUnit\Framework\TestCase;
 
-class FileIteratorTest extends \PHPUnit_Framework_TestCase
+class FileIteratorTest extends TestCase
 {
 
     public function testIterator()

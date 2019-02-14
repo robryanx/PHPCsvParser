@@ -1,8 +1,9 @@
 <?php
 
 use KzykHys\CsvParser\Iterator\CsvIterator;
+use PHPUnit\Framework\TestCase;
 
-class CsvIteratorTest extends PHPUnit_Framework_TestCase
+class CsvIteratorTest extends TestCase
 {
 
     public function testBlank()
